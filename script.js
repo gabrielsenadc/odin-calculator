@@ -9,15 +9,28 @@ const clear = document.querySelector("#clear");
 const dot = document.querySelector("#dot");
 const erase = document.querySelector("#erase");
 
+//o que vai aparecer no visor
 let print = "";
+
+//primeiro e  segundo numero da operacao
 let firstNum = 0;
 let secondNum = 0;
+
+//0 se ainda precisar pegar o firstNum dos inputs
+//1 se precisar pegar so o secondNum dos inputs
 let n = 0;
+
+//qual operacao
 let operation = "";
+
+//se o numero tem decimal
 let temDot = 0;
 
 erase.addEventListener("click", () => {
+    //retirar um espaco
     if(print[print.length - 1] === " ") print = print.slice(0, print.length-1);
+
+    //apagar um operador
     if(operation != "")
         if(print[print.length - 1] === operation){
             operation = "";
@@ -25,6 +38,8 @@ erase.addEventListener("click", () => {
         }
     print = print.slice(0, print.length-1);
     result.textContent = print;
+
+    //nao tiver mais o que ser tirado
     if(print === ""){
         secondNum = 0;
         firstNum = 0;
@@ -51,6 +66,7 @@ dot.addEventListener("click", () => {
 });
 
 let id = ""
+//adicionar EventListener para todos os numeros
 for(let i = 0; i < 10; i++){
     id = "#num" + i
     num[i] = document.querySelector(id);
@@ -64,7 +80,7 @@ function addOperation(op){
     if(!n) {
         firstNum = Number(print);
         n++;
-    } else{
+    } else{    //realizar a primeira operacao caso dois operadores tenham sido digitados
         Operation();
         firstNum = Number(print);
     }
@@ -107,6 +123,8 @@ function Operation(){
         console.log(secondNum);
         print = String(firstNum * secondNum);
     }
+
+    //arredondar erros de aproximacao
     if(print.includes("."))
         if((print.slice(print.indexOf(".") + 1)).length > 15) print = String(Number(print).toFixed(2));
     
