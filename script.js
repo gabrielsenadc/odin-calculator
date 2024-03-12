@@ -7,6 +7,7 @@ const add = document.querySelector("#add");
 const equal = document.querySelector("#equal");
 const clear = document.querySelector("#clear");
 const dot = document.querySelector("#dot");
+const erase = document.querySelector("#erase");
 
 let print = "";
 let firstNum = 0;
@@ -14,6 +15,22 @@ let secondNum = 0;
 let n = 0;
 let operation = "";
 let temDot = 0;
+
+erase.addEventListener("click", () => {
+    if(print[print.length - 1] === " ") print = print.slice(0, print.length-1);
+    if(operation != "")
+        if(print[print.length - 1] === operation){
+            operation = "";
+            n = 0;
+        }
+    print = print.slice(0, print.length-1);
+    result.textContent = print;
+    if(print === ""){
+        secondNum = 0;
+        firstNum = 0;
+        operation = "";
+    }
+});
 
 clear.addEventListener("click", () =>{
     result.textContent = "";
