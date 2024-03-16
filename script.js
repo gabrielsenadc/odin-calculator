@@ -8,6 +8,7 @@ const equal = document.querySelector("#equal");
 const clear = document.querySelector("#clear");
 const dot = document.querySelector("#dot");
 const erase = document.querySelector("#erase");
+const sign = document.querySelector("#sign");
 
 //o que vai aparecer no visor
 let print = "";
@@ -44,7 +45,28 @@ erase.addEventListener("click", () => {
         secondNum = 0;
         firstNum = 0;
         operation = "";
+        n = 0;
     }
+});
+
+//mudar o sinal dos numeros
+sign.addEventListener("click", () =>{
+    if(!n){  //primeiro numero
+        if(print.slice(0,1) == "-") print = print.slice(1); 
+        else print = "-" + print;
+        result.textContent = print;
+    } else {  //segundo numero
+        let posOp = print.indexOf(operation);
+
+        //caso o primeiro numero seja negativo, pega o endereco do segundo "-""
+        if(firstNum < 0) posOp = print.indexOf(operation, 2); 
+
+        console.log(print.at(posOp));
+        if(print.at(posOp + 2) == "-") print = print.slice(0, posOp + 2) + print.slice(posOp + 3);
+        else print = print.slice(0, posOp + 2) + "-" + print.slice(posOp + 2);
+        result.textContent = print;
+    }
+    
 });
 
 clear.addEventListener("click", () =>{
@@ -53,6 +75,7 @@ clear.addEventListener("click", () =>{
     secondNum = 0;
     firstNum = 0;
     operation = "";
+    n = 0;
 });
 
 dot.addEventListener("click", () => {
@@ -105,6 +128,7 @@ function Operation(){
 
     if(operation === "-"){
         pos = print.indexOf("-");
+        if(firstNum < 0) pos = print.indexOf("-", 2);
         secondNum = Number(print.slice(pos + 1));
         console.log(secondNum);
         print = String(firstNum - secondNum);
@@ -137,7 +161,7 @@ function Operation(){
 let pos = 0;
 equal.addEventListener("click", () => {
     Operation();
-    n--;
+    n = 0;
 });
 
 
