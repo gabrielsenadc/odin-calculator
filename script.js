@@ -1,5 +1,4 @@
 const result = document.querySelector(".result");
-const num = [];
 const divide = document.querySelector("#divide");
 const mult = document.querySelector("#multiply");
 const sub = document.querySelector("#subtract");
@@ -88,16 +87,16 @@ dot.addEventListener("click", () => {
     }
 });
 
-let id = ""
 //adicionar EventListener para todos os numeros
-for(let i = 0; i < 10; i++){
-    id = "#num" + i
-    num[i] = document.querySelector(id);
-    num[i].addEventListener("click", () => {
-        print += i;
+const num = Array.from(document.querySelectorAll(".num"));
+num.map((n, i) => {
+    n.addEventListener("click", () => {
+        if(i+1 === 10) i = -1;  //0 esta na posicao 9 entao precisa ser ajustado
+        print += i+1;
         result.textContent = print;
     });
-}
+})
+
 
 function addOperation(op){
     if(!n) {
