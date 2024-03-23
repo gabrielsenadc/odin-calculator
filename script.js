@@ -26,7 +26,7 @@ let operation = "";
 //se o numero tem decimal
 let temDot = 0;
 
-erase.addEventListener("click", () => {
+function backspace(){
     //retirar um espaco
     if(print[print.length - 1] === " ") print = print.slice(0, print.length-1);
 
@@ -46,7 +46,9 @@ erase.addEventListener("click", () => {
         operation = "";
         n = 0;
     }
-});
+}
+
+erase.addEventListener("click", backspace);
 
 //mudar o sinal dos numeros
 sign.addEventListener("click", () =>{
@@ -75,16 +77,21 @@ clear.addEventListener("click", () =>{
     firstNum = 0;
     operation = "";
     n = 0;
+    temDot = 0;
 });
 
-dot.addEventListener("click", () => {
+function decimal() {
     if(!temDot){
         if(print == "") print = "0";
         else if (operation != "" && print.slice(print.indexOf(operation) + 1) == " ") print += "0";
         print += ".";
         result.textContent = print;
-        temDot++;
     }
+}
+
+dot.addEventListener("click", () => {
+    decimal();
+    temDot++;
 });
 
 //adicionar EventListener para todos os numeros
@@ -97,6 +104,26 @@ num.map((n, i) => {
     });
 })
 
+document.addEventListener('keydown', (event) => {
+    let num = event.code.split("").find((c) => (c >= '0' && c <= '9'));
+    if(num === undefined){
+        if(event.code === "NumpadAdd") addOperation("+");
+        if(event.code === "NumpadSubtract") addOperation("-");
+        if(event.code === "NumpadDivide") addOperation("/");
+        if(event.code === "NumpadMultiply") addOperation("*");
+        if(event.code.includes("Enter")) {
+            Operation(); 
+            n = 0;
+        }
+        if(event.code === "Backspace") backspace();
+        if(event.code === "NumpadDecimal") {
+            decimal(); 
+            temDot++
+        };
+    }   
+    if(num !== undefined) print += num;
+    result.textContent = print;
+});
 
 function addOperation(op){
     if(!n) {
@@ -149,11 +176,12 @@ function Operation(){
 
     //arredondar erros de aproximacao
     if(print.includes("."))
-        if((print.slice(print.indexOf(".") + 1)).length > 15) print = String(Number(print).toFixed(2));
+        if((print.slice(print.indexOf(".") + 1)).length > 13) print = String(Number(print).toFixed(2));
     
     result.textContent = print;
     secondNum = 0;
-    temDot = 0;
+    if(print.includes(".")) temDot = 1;
+    else temDot = 0;
     operation = "";
 }
 
